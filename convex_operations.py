@@ -7,16 +7,25 @@
   postfix_param_type: None,
   name: 'addition',
   description: 'boopity boop',
-  group: 'addition',
+#   group: 'addition',
   action: lambda x, y: x + y,
   redefinable: False
 }
 """
 
-OPERATIONS = [
-    {
-        opcode: '+'
-    }
-]
+from convex_types import *
 
-OPERATIONS_MAP
+OPERATIONS = {
+    '+': {
+        'opcode': '+',
+        'arity': 2,
+        'name': 'Addition',
+        'description': 'Pop two numbers and push their sum.',
+        'actions': [
+            {
+                'param_types': (ConvexNumber, ConvexNumber),
+                'action': lambda x, y: x + y
+            }
+        ],
+    }
+}
