@@ -13,7 +13,7 @@
 }
 """
 
-from convex_types import *
+from cobalt_types import *
 
 OPERATIONS = {
     '+': {
@@ -23,7 +23,7 @@ OPERATIONS = {
         'description': 'Pop two numbers and push their sum.',
         'actions': [
             {
-                'param_types': (ConvexNumber, ConvexNumber),
+                'param_types': (CobaltNumber, CobaltNumber),
                 'action': lambda x, y: x + y
             }
         ],

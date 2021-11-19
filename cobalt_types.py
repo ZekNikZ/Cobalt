@@ -1,7 +1,7 @@
 # __init__ = ctor
 # __del__ = dtor
 # __repr__ = Python representation
-# __str__ = string representation (Convex)
+# __str__ = string representation (Cobalt)
 # __format__ = if custom formatting options are required beyond str()
 # __lt__, __le__, __eq__, __ne__, __gt__, __ge__ = comparison
 # __hash__ = hash((self.val, self.name, ...))
@@ -19,7 +19,7 @@
 # __index__ = (operator.index()) = <int value>
 # __round__, __trunc__, __floor__, __ceil__ 
 
-# self.__convex_type__
+# self.__Cobalt_type__
 
 from abc import abstractmethod, ABCMeta
 from collections import defaultdict
@@ -28,9 +28,9 @@ import decimal
 # TODO: Constants
 decimal.getcontext().prec = 100
 
-class ConvexType(metaclass=ABCMeta):
+class CobaltType(metaclass=ABCMeta):
     @abstractmethod
-    def convex_type():
+    def Cobalt_type():
         pass
 
     @abstractmethod
@@ -49,8 +49,8 @@ class ConvexType(metaclass=ABCMeta):
     def __ne__(self, o: object) -> bool:
         pass
 
-class ConvexNumeric(ConvexType, metaclass=ABCMeta):
-    def convex_type():
+class CobaltNumeric(CobaltType, metaclass=ABCMeta):
+    def Cobalt_type():
         return 'numeric'
 
     @abstractmethod
@@ -61,8 +61,8 @@ class ConvexNumeric(ConvexType, metaclass=ABCMeta):
     def __neg__(self):
         pass
 
-class ConvexNumber(ConvexNumeric, metaclass=ABCMeta):
-    def convex_type():
+class CobaltNumber(CobaltNumeric, metaclass=ABCMeta):
+    def Cobalt_type():
         return 'number'
 
     @abstractmethod
@@ -73,22 +73,22 @@ class ConvexNumber(ConvexNumeric, metaclass=ABCMeta):
     def __radd__(self, other):
         pass
 
-class ConvexReal(ConvexNumber):
-    def convex_type():
+class CobaltReal(CobaltNumber):
+    def Cobalt_type():
         return 'real'
 
-class ConvexAction(ConvexType):
-    def convex_type():
+class CobaltAction(CobaltType):
+    def Cobalt_type():
         return 'action'
 
-class ConvexIter(ConvexType):
-    def convex_type():
+class CobaltIter(CobaltType):
+    def Cobalt_type():
         return 'iter'
 
 # ======
 
-class ConvexInt(ConvexReal):
-    def convex_type():
+class CobaltInt(CobaltReal):
+    def Cobalt_type():
         return 'int'
 
     def __init__(self, val):
@@ -98,21 +98,21 @@ class ConvexInt(ConvexReal):
         return self.val
 
     def __neg__(self):
-        return ConvexInt(-self.val)
+        return CobaltInt(-self.val)
 
     def __add__(self, other):
-        if not isinstance(other, ConvexNumber):
+        if not isinstance(other, CobaltNumber):
             raise TypeError('addition is only supported between number types')
-        if isinstance(other, ConvexFloat) or isinstance(other, ConvexComplex) or isinstance(other, ConvexQuaternion):
+        if isinstance(other, CobaltFloat) or isinstance(other, CobaltComplex) or isinstance(other, CobaltQuaternion):
             return other.__radd__(self)
-        return ConvexInt(self.val + other.val)
+        return CobaltInt(self.val + other.val)
 
     def __radd__(self, other):
-        if not isinstance(other, ConvexNumber):
+        if not isinstance(other, CobaltNumber):
             raise TypeError('addition is only supported between number types')
-        if isinstance(other, ConvexFloat) or isinstance(other, ConvexComplex) or isinstance(other, ConvexQuaternion):
+        if isinstance(other, CobaltFloat) or isinstance(other, CobaltComplex) or isinstance(other, CobaltQuaternion):
             return other.__add__(self)
-        return ConvexInt(self.val + other.val)
+        return CobaltInt(self.val + other.val)
 
     def __repr__(self):
         return f'{self.__class__.__name__}({self.val})'
@@ -126,8 +126,8 @@ class ConvexInt(ConvexReal):
     def __ne__(self, o: object) -> bool:
         return self.val != o.val
 
-class ConvexFloat(ConvexReal):
-    def convex_type():
+class CobaltFloat(CobaltReal):
+    def Cobalt_type():
         return 'float'
 
     def __init__(self, val):
@@ -137,21 +137,21 @@ class ConvexFloat(ConvexReal):
         return self.val
 
     def __neg__(self):
-        return ConvexInt(-self.val)
+        return CobaltInt(-self.val)
 
     def __add__(self, other):
-        if not isinstance(other, ConvexNumber):
+        if not isinstance(other, CobaltNumber):
             raise TypeError('addition is only supported between number types')
-        if isinstance(other, ConvexComplex) or isinstance(other, ConvexQuaternion):
+        if isinstance(other, CobaltComplex) or isinstance(other, CobaltQuaternion):
             return other.__radd__(self)
-        return ConvexFloat(self.val + other.val)
+        return CobaltFloat(self.val + other.val)
 
     def __radd__(self, other):
-        if not isinstance(other, ConvexNumber):
+        if not isinstance(other, CobaltNumber):
             raise TypeError('addition is only supported between number types')
-        if isinstance(other, ConvexComplex) or isinstance(other, ConvexQuaternion):
+        if isinstance(other, CobaltComplex) or isinstance(other, CobaltQuaternion):
             return other.__add__(self)
-        return ConvexFloat(self.val + other.val)
+        return CobaltFloat(self.val + other.val)
 
     def __repr__(self):
         return f'{self.__class__.__name__}({self.val})'
@@ -165,48 +165,48 @@ class ConvexFloat(ConvexReal):
     def __ne__(self, o: object) -> bool:
         return self.val != o.val
 
-class ConvexComplex(ConvexNumber):
-    def convex_type():
+class CobaltComplex(CobaltNumber):
+    def Cobalt_type():
         return 'complex'
 
     def __init__(self, val):
         self.val = complex(val)
 
-class ConvexQuaternion(ConvexNumber, ConvexIter):
-    def convex_type():
+class CobaltQuaternion(CobaltNumber, CobaltIter):
+    def Cobalt_type():
         return 'quaternion'
 
-class ConvexString(ConvexIter):
-    def convex_type():
+class CobaltString(CobaltIter):
+    def Cobalt_type():
         return 'str'
 
 # ======
 
-class ConvexChar(ConvexNumeric, ConvexIter):
-    def convex_type():
+class CobaltChar(CobaltNumeric, CobaltIter):
+    def Cobalt_type():
         return 'str'
 
 
-class ConvexRegex(ConvexString):
-    def convex_type():
+class CobaltRegex(CobaltString):
+    def Cobalt_type():
         return 'regex'
 
 
-class ConvexList(ConvexIter):
-    def convex_type():
+class CobaltList(CobaltIter):
+    def Cobalt_type():
         return 'list'
 
 
-class ConvexBlock(ConvexAction):
-    def convex_type():
+class CobaltBlock(CobaltAction):
+    def Cobalt_type():
         return 'block'
 
 
-class ConvexOperation(ConvexAction):
+class CobaltOperation(CobaltAction):
     def __init__(self, opcode: str):
         self._opcode = opcode
 
-    def convex_type():
+    def Cobalt_type():
         return 'operation'
 
     @property
@@ -226,15 +226,15 @@ class ConvexOperation(ConvexAction):
         return self._val != o._val
 
 
-class ConvexVariable(ConvexAction):
-    def convex_type():
+class CobaltVariable(CobaltAction):
+    def Cobalt_type():
         return 'variable'
 
-class ConvexLiteral(ConvexAction):
-    def __init__(self, val: ConvexType):
+class CobaltLiteral(CobaltAction):
+    def __init__(self, val: CobaltType):
         self._val = val
 
-    def convex_type():
+    def Cobalt_type():
         return 'literal'
 
     @property

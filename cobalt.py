@@ -1,5 +1,5 @@
 import click
-import convex_encoding
+from cobalt_encoding import encode, decode
 
 @click.group()
 @click.option('--debug/--no-debug', default=False)
@@ -24,13 +24,13 @@ def encodeGroup(debug):
 @click.argument('input', type=click.Path(exists=True))
 @click.argument('output', type=click.Path(), default='')
 def encode(input, output):
-    convex_encoding.encode(input, output=output or None)
+    encode(input, output=output or None)
 
 @encodeGroup.command()
 @click.argument('input', type=click.Path(exists=True))
 @click.argument('output', type=click.Path(), default='')
 def decode(input, output):
-    convex_encoding.decode(input, output=output or None)
+    decode(input, output=output or None)
 
 cli = click.CommandCollection(sources=[runGroup, encodeGroup])
 

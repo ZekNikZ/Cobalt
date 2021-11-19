@@ -1,6 +1,6 @@
-from convex_types import *
-from convex_operations import OPERATIONS
-from convex_utils import print_stack
+from cobalt_types import *
+from cobalt_operations import OPERATIONS
+from cobalt_utils import print_stack
 
 def apply_operation(stack:list, op_info, action):
     args = [stack.pop() for _ in range(op_info['arity'])]
@@ -12,13 +12,13 @@ def apply_operation(stack:list, op_info, action):
     else:
         stack.append(res)
 
-def evaluate(stack: list[ConvexType], operation_list: list[ConvexAction], variables: dict[str, ConvexType]={}):
+def evaluate(stack: list[CobaltType], operation_list: list[CobaltAction], variables: dict[str, CobaltType]={}):
     for i in range(len(operation_list)):
         operation = operation_list[i]
 
-        if isinstance(operation, ConvexLiteral):
+        if isinstance(operation, CobaltLiteral):
             stack.append(operation.val)
-        elif isinstance(operation, ConvexOperation):
+        elif isinstance(operation, CobaltOperation):
             op_info = OPERATIONS[operation.opcode]
 
             # TODO: pull from STDIN if not enough on stack
@@ -46,7 +46,7 @@ def evaluate(stack: list[ConvexType], operation_list: list[ConvexAction], variab
                 # TODO: better error
                 raise RuntimeError("invalid operation for operands on stack")
 
-def parse(input_string: str) -> list[ConvexAction]:
+def parse(input_string: str) -> list[CobaltAction]:
     input_string += ' '
 
     res = []
@@ -72,9 +72,9 @@ def parse(input_string: str) -> list[ConvexAction]:
 
         if in_numeric_literal:
             if '.' in numeric_literal:
-                res.append(ConvexLiteral(ConvexFloat(numeric_sign + numeric_literal)))
+                res.append(CobaltLiteral(CobaltFloat(numeric_sign + numeric_literal)))
             else:
-                res.append(ConvexLiteral(ConvexInt(numeric_sign + numeric_literal)))
+                res.append(CobaltLiteral(CobaltInt(numeric_sign + numeric_literal)))
             numeric_sign = numeric_literal = ''
             in_numeric_literal = False
 
@@ -82,11 +82,11 @@ def parse(input_string: str) -> list[ConvexAction]:
             i += 1
             continue
         elif c == "'":
-            res.append(ConvexLiteral(ConvexChar(input_string[i + 1])))
+            res.append(CobaltLiteral(CobaltChar(input_string[i + 1])))
             i += 1
             continue
         elif c in OPERATIONS.keys():
-            res.append(ConvexOperation(c))
+            res.append(CobaltOperation(c))
             i += 1
             continue
 
@@ -98,5 +98,5 @@ def parse(input_string: str) -> list[ConvexAction]:
 
 if __name__ == '__main__':
     stack = []
-    evaluate(stack, [ConvexLiteral(ConvexInt(2)), ConvexLiteral(ConvexInt(3)), ConvexOperation('+')])
+    evaluate(stack, [CobaltLiteral(CobaltInt(2)), CobaltLiteral(CobaltInt(3)), CobaltOperation('+')])
     print_stack(stack)

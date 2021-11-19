@@ -6,7 +6,7 @@ ENCODING = dict((v,k) for k,v in CODE_PAGE.items())
 DECODING = CODE_PAGE
 
 CCPX_EXT = '.ccp'
-TEXT_EXT = '.convex'
+TEXT_EXT = '.cobalt'
 TEXT_ENCODING = 'utf-8'
 
 def encode(file : str, output : str=None):
